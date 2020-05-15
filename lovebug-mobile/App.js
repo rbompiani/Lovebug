@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, Button, View } from 'react-native';
 
 export default function App() {
+
+  const [angle, setAngle] = useState();
+
+  const angleInputHandler = (ang) => {
+    setAngle(ang);
+  }
+
+  const clearInputHandler = () => {
+    setAngle("");
+  }
+
+  const sendAngle = () => {
+    console.log("your angle is: ", angle);
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Set Servo Angle:</Text>
@@ -11,14 +26,15 @@ export default function App() {
         autoFocus={true}
         style={styles.input}
         placeholder="0 - 180"
-        onChange={() => { }}
+        value={angle}
+        onChangeText={angleInputHandler}
       />
       <View style={styles.buttonContainer}>
         <View style={styles.button} >
-          <Button title="Send" />
+          <Button title="Send" onPress={sendAngle} />
         </View>
         <View style={styles.button} >
-          <Button title="Clear" />
+          <Button title="Clear" onPress={clearInputHandler} />
         </View>
       </View>
     </View>
