@@ -15,6 +15,16 @@ export default function App() {
 
   const sendAngle = () => {
     console.log("your angle is: ", angle);
+    fetch('http://10.0.0.218/angle', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        angle: angle
+      })
+    }).then(clearInputHandler())
   }
 
   return (
@@ -26,6 +36,8 @@ export default function App() {
         autoFocus={true}
         style={styles.input}
         placeholder="0 - 180"
+        underlineColorAndroid="transparent"
+        keyboardType="number-pad"
         value={angle}
         onChangeText={angleInputHandler}
       />
