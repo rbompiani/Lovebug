@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, Button, View } from 'react-native';
 
+import * as translations from './assets/translations.json';
+
 export default function App() {
 
+  /* STATE AND HANDLERS FOR DIRECT SERVO ANGLE CONTROL
   const [angle, setAngle] = useState();
 
   const angleInputHandler = (ang) => {
@@ -25,25 +28,53 @@ export default function App() {
         angle: angle
       })
     }).then(clearInputHandler())
+  }*/
+
+  const binaryCharacters = translations.characters;
+
+  const [message, setMessage] = useState();
+  const [binaryMessage, setBinaryMessage] = useState([]);
+  const [encodedMessage, setEncodedMessage] = useState([]);
+
+  const clearInputHandler = () => {
+    setMessage("");
+  }
+
+  const messageInputHandler = (mes) => {
+    let tempBinary = [];
+    for (i = 0; i < mes.length; i++) {
+      const letter = mes[i].toUpperCase();
+      tempBinary.push(binaryCharacters[letter]);
+    }
+    setMessage(mes);
+    setBinaryMessage(tempBinary)
+  }
+
+  const sendMessage = () => {
+    // take messsage and encode it to binary
+    console.log("This is what you have saved as binary: ", binaryMessage);
+    //split even & odd characters (left/right)
+    //convert left & right binary configurations to servo angles
+    //send fetch post request to arduino...& firebase?
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Set Servo Angle:</Text>
+      <Text style={styles.title}>Message:</Text>
       <TextInput
         autoCompleteType="off"
         autoCorrect={false}
         autoFocus={true}
         style={styles.input}
-        placeholder="0 - 180"
+        placeholder="enter message"
         underlineColorAndroid="transparent"
-        keyboardType="number-pad"
-        value={angle}
-        onChangeText={angleInputHandler}
+        //keyboardType="number-pad"
+        value={message}
+        onChangeText={messageInputHandler}
       />
       <View style={styles.buttonContainer}>
         <View style={styles.button} >
-          <Button title="Send" onPress={sendAngle} />
+          <Button title="Send" onPress={sendMessage} />
         </View>
         <View style={styles.button} >
           <Button title="Clear" onPress={clearInputHandler} />
