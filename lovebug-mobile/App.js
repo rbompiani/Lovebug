@@ -34,28 +34,68 @@ export default function App() {
 
   const [message, setMessage] = useState();
   const [binaryMessage, setBinaryMessage] = useState([]);
-  const [encodedMessage, setEncodedMessage] = useState([]);
+  const [encodedMessage, setEncodedMessage] = useState();
 
   const clearInputHandler = () => {
     setMessage("");
+    setBinaryMessage([]);
+    setEncodedMessage();
   }
 
+  // ----- HANDLE INPUT ----- // stores plain text and binary characters from input to state
   const messageInputHandler = (mes) => {
+
+    // binary lookup
     let tempBinary = [];
     for (i = 0; i < mes.length; i++) {
       const letter = mes[i].toUpperCase();
       tempBinary.push(binaryCharacters[letter]);
     }
+
+    // set plain text message
     setMessage(mes);
+
+    // set binary message
     setBinaryMessage(tempBinary)
   }
 
+  // ----- SEND MESSAGE ----- // this converts text message to encoded object (char,binary char, servo angles) and sends fetch POST
   const sendMessage = () => {
-    // take messsage and encode it to binary
+
+    // create temporary object to add to encoded state
+    let tempMessage = { message: [] };
+
+    // for each character in the message...
+    for (i = 0; i < message.length; i++) {
+
+      //select binary character that matches message character
+      const binaryChar = binaryMessage[i];
+      let leftBinary = "";
+      let rightBinary = "";
+
+      //split binary digits into left & right columns
+      for (let digitIndex = 0; digitIndex < binaryChar.length; digitIndex++) {
+        if (!(digitIndex % 2)) {
+          leftBinary += binaryChar.charAt(digitIndex);
+        } else {
+          rightBinary += binaryChar.charAt(digitIndex);
+        }
+      }
+
+      // TO DO:: convert binary left and rights to servo angles
+
+      // create object for each message character
+      const tempCharObj = { character: message.charAt(i), binary: binaryMessage[i], leftAngle: leftBinary, rightAngle: rightBinary };
+
+      tempMessage.message.push(tempCharObj);
+    }
+
+    setEncodedMessage(tempMessage);
+    console.log("This is what you have saved as text: ", message);
     console.log("This is what you have saved as binary: ", binaryMessage);
-    //split even & odd characters (left/right)
-    //convert left & right binary configurations to servo angles
-    //send fetch post request to arduino...& firebase?
+    console.log("This is what you have saved as encoded: ", tempMessage);
+
+    // TO DO:: fetch post request to arduino...& firebase?
   }
 
   return (
