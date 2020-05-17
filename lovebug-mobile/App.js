@@ -31,6 +31,7 @@ export default function App() {
   }*/
 
   const binaryCharacters = translations.characters;
+  const servoAngles = translations.angles;
 
   const [message, setMessage] = useState();
   const [binaryMessage, setBinaryMessage] = useState([]);
@@ -85,7 +86,7 @@ export default function App() {
       // TO DO:: convert binary left and rights to servo angles
 
       // create object for each message character
-      const tempCharObj = { character: message.charAt(i), binary: binaryMessage[i], leftAngle: leftBinary, rightAngle: rightBinary };
+      const tempCharObj = { character: message.charAt(i), binary: binaryMessage[i], leftAngle: servoAngles[leftBinary], rightAngle: servoAngles[rightBinary] };
 
       tempMessage.message.push(tempCharObj);
     }
